@@ -5,6 +5,8 @@ import { parseRange } from "@/lib/session";
 import { overviewMetrics, topPages, topSources } from "@/lib/analytics";
 import { rateLimitDashboard } from "@/lib/rate-limit";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string };
 
 export const GET = route<Params>(async (req, { params }) => {

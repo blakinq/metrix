@@ -25,6 +25,12 @@ export function toErrorResponse(err: unknown): Response {
   if (err instanceof HttpError) {
     return NextResponse.json({ error: err.message }, { status: err.status });
   }
+  // Next.js dynamic-server bail (occurs during build static-prerender probe).
+  // Not an error — Next.js handles it by rendering the route dynamically.
+  const digest = (err as { digest?: string } | null)?.digest;
+  if (digest === "DYNAMIC_SERVER_USAGE" || (digest && digest.startsWith("NEXT_"))) {
+    throw err;
+  }
   console.error("[api] unexpected error", err);
   return NextResponse.json({ error: "Internal server error" }, { status: 500 });
 }

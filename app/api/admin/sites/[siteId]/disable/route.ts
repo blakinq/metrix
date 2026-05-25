@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireUser, route, HttpError } from "@/lib/get-user";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string };
 
 export const POST = route<Params>(async (_req, { params }) => {

@@ -4,6 +4,8 @@ import { assertSiteAccess } from "@/lib/ownership";
 import { parseRange } from "@/lib/session";
 import { timeseries } from "@/lib/analytics";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string };
 
 export const GET = route<Params>(async (req, { params }) => {

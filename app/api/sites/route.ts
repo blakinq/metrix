@@ -4,6 +4,8 @@ import { requireUser, route } from "@/lib/get-user";
 import { createSiteSchema } from "@/lib/validation";
 import { generateTrackingId } from "@/lib/ids";
 
+export const dynamic = "force-dynamic";
+
 export const GET = route(async (_req) => {
   const user = await requireUser();
   const sites = await prisma.site.findMany({

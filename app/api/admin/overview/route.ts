@@ -3,6 +3,8 @@ import { prisma } from "@/lib/db";
 import { requireUser, route, HttpError } from "@/lib/get-user";
 import { startOfDay } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 export const GET = route(async (_req) => {
   const user = await requireUser();
   const me = await prisma.user.findUnique({ where: { id: user.id } });

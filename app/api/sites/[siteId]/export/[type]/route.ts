@@ -5,6 +5,8 @@ import { parseRange } from "@/lib/session";
 import { toCsv } from "@/lib/csv";
 import { topPages, topSources, customEvents as customEventsAgg } from "@/lib/analytics";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string; type: string };
 
 const MAX_ROWS = 50_000;

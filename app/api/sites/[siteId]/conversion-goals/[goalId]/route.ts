@@ -4,6 +4,8 @@ import { requireUser, route } from "@/lib/get-user";
 import { assertSiteAccess } from "@/lib/ownership";
 import { conversionGoalSchema } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string; goalId: string };
 
 export const PATCH = route<Params>(async (req, { params }) => {

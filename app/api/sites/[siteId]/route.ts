@@ -4,6 +4,8 @@ import { requireUser, route } from "@/lib/get-user";
 import { assertSiteAccess } from "@/lib/ownership";
 import { updateSiteSchema } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 type Params = { siteId: string };
 
 export const GET = route<Params>(async (_req, { params }) => {
