@@ -121,7 +121,7 @@ export async function POST(req: Request) {
           screenWidth: input.screenWidth ?? null,
           screenHeight: input.screenHeight ?? null,
           language: input.language ?? null,
-          metadata: input.metadata ?? {},
+          metadata: (input.metadata ?? {}) as object,
           isBot: bot,
           occurredAt,
         },
