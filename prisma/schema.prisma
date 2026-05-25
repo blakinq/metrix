@@ -1,0 +1,292 @@
+// Metrix MVP schema — see metrix_app_architecture.md §29
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum WorkspaceRole {
+  owner
+  admin
+  analyst
+  developer
+}
+
+enum SiteStatus {
+  active
+  paused
+  deleted
+}
+
+enum GoalType {
+  button_click
+  form_submit
+  page_visit
+  custom_event
+  external_link
+  whatsapp_click
+  phone_click
+  email_click
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String?
+  email           String           @unique
+  passwordHash    String?
+  emailVerifiedAt DateTime?
+  isSuperAdmin    Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  ownedWorkspaces Workspace[]      @relation("WorkspaceOwner")
+  memberships     WorkspaceMember[]
+  auditLogs       AuditLog[]
+}
+
+model Workspace {
+  id        String   @id @default(cuid())
+  name      String
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owner   User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members WorkspaceMember[]
+  sites   Site[]
+
+  @@index([ownerId])
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole @default(owner)
+  createdAt   DateTime      @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([userId])
+}
+
+model Site {
+  id          String     @id @default(cuid())
+  workspaceId String
+  name        String
+  domain      String
+  trackingId  String     @unique
+  status      SiteStatus @default(active)
+  timezone    String     @default("UTC")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  workspace        Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  sessions         Session[]
+  events           Event[]
+  conversionGoals  ConversionGoal[]
+  conversionEvents ConversionEvent[]
+  dailySiteStats   DailySiteStats[]
+  dailyPageStats   DailyPageStats[]
+  dailySourceStats DailySourceStats[]
+  dailyDeviceStats DailyDeviceStats[]
+
+  @@index([workspaceId])
+  @@index([trackingId])
+}
+
+model Session {
+  id              String   @id
+  siteId          String
+  visitorId       String
+  startedAt       DateTime @default(now())
+  lastSeenAt      DateTime @default(now())
+  durationSeconds Int      @default(0)
+  entryPage       String?
+  exitPage        String?
+  referrer        String?
+  source          String?
+  medium          String?
+  campaign        String?
+  country         String?
+  region          String?
+  city            String?
+  deviceType      String?
+  browser         String?
+  os              String?
+  pageviewCount   Int      @default(0)
+  eventCount      Int      @default(0)
+  isBot           Boolean  @default(false)
+
+  site   Site    @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  events Event[]
+
+  @@index([siteId, startedAt])
+  @@index([visitorId])
+}
+
+model Event {
+  id           String   @id @default(cuid())
+  siteId       String
+  visitorId    String
+  sessionId    String
+  eventType    String
+  eventName    String?
+  pageUrl      String?
+  pagePath     String?
+  pageTitle    String?
+  referrer     String?
+  source       String?
+  medium       String?
+  campaign     String?
+  country      String?
+  region       String?
+  city         String?
+  deviceType   String?
+  browser      String?
+  os           String?
+  screenWidth  Int?
+  screenHeight Int?
+  language     String?
+  metadata     Json?
+  isBot        Boolean  @default(false)
+  occurredAt   DateTime
+  receivedAt   DateTime @default(now())
+
+  site             Site              @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  session          Session           @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  conversionEvents ConversionEvent[]
+
+  @@index([siteId, occurredAt])
+  @@index([siteId, eventType, occurredAt])
+  @@index([siteId, pagePath])
+  @@index([sessionId])
+  @@index([visitorId])
+}
+
+model ConversionGoal {
+  id           String   @id @default(cuid())
+  siteId       String
+  name         String
+  goalType     GoalType
+  matchingRule Json
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  site             Site              @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  conversionEvents ConversionEvent[]
+
+  @@index([siteId])
+}
+
+model ConversionEvent {
+  id         String   @id @default(cuid())
+  siteId     String
+  goalId     String
+  eventId    String
+  visitorId  String
+  sessionId  String
+  source     String?
+  medium     String?
+  campaign   String?
+  occurredAt DateTime
+
+  site  Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  goal  ConversionGoal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+  event Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([siteId, occurredAt])
+  @@index([goalId, occurredAt])
+}
+
+model DailySiteStats {
+  id                 String   @id @default(cuid())
+  siteId             String
+  date               DateTime
+  pageviews          Int      @default(0)
+  uniqueVisitors     Int      @default(0)
+  sessions           Int      @default(0)
+  events             Int      @default(0)
+  bounces            Int      @default(0)
+  bounceRate         Float    @default(0)
+  avgSessionDuration Float    @default(0)
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, date])
+  @@index([siteId, date])
+}
+
+model DailyPageStats {
+  id             String   @id @default(cuid())
+  siteId         String
+  date           DateTime
+  pagePath       String
+  pageviews      Int      @default(0)
+  uniqueVisitors Int      @default(0)
+  entrances      Int      @default(0)
+  exits          Int      @default(0)
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, date, pagePath])
+  @@index([siteId, date])
+}
+
+model DailySourceStats {
+  id          String   @id @default(cuid())
+  siteId      String
+  date        DateTime
+  source      String
+  medium      String
+  campaign    String
+  sessions    Int      @default(0)
+  visitors    Int      @default(0)
+  pageviews   Int      @default(0)
+  conversions Int      @default(0)
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, date, source, medium, campaign])
+  @@index([siteId, date])
+}
+
+model DailyDeviceStats {
+  id         String   @id @default(cuid())
+  siteId     String
+  date       DateTime
+  deviceType String
+  browser    String
+  os         String
+  sessions   Int      @default(0)
+  visitors   Int      @default(0)
+  pageviews  Int      @default(0)
+
+  site Site @relation(fields: [siteId], references: [id], onDelete: Cascade)
+
+  @@unique([siteId, date, deviceType, browser, os])
+  @@index([siteId, date])
+}
+
+model AuditLog {
+  id           String   @id @default(cuid())
+  actorUserId  String?
+  action       String
+  targetType   String
+  targetId     String
+  metadata     Json?
+  createdAt    DateTime @default(now())
+
+  actor User? @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId, createdAt])
+  @@index([targetType, targetId])
+}
