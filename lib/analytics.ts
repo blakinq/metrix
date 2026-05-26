@@ -13,6 +13,28 @@ export interface RangeArgs {
 
 const notBot = { isBot: false };
 
+/**
+ * Returns the overview metrics for the requested window plus the immediately
+ * preceding window of the same length, so the dashboard can show deltas.
+ *
+ * Intentionally runs the two periods sequentially: when the database is fronted
+ * by a pgbouncer transaction pooler (Supabase's default) the `connection_limit`
+ * is usually 1, so parallel fan-out queues queries at the pool level and trips
+ * the 10s acquisition timeout. Sequential is the same wall-clock speed there.
+ */
+export async function overviewMetricsCompared(args: RangeArgs) {
+  const span = args.to.getTime() - args.from.getTime();
+  const prevTo = new Date(args.from.getTime());
+  const prevFrom = new Date(args.from.getTime() - span);
+  const current = await overviewMetrics(args);
+  const previous = await overviewMetrics({
+    siteId: args.siteId,
+    from: prevFrom,
+    to: prevTo,
+  });
+  return { current, previous };
+}
+
 export async function overviewMetrics({ siteId, from, to }: RangeArgs) {
   const where = { siteId, occurredAt: { gte: from, lte: to }, ...notBot };
 
@@ -163,10 +185,66 @@ export async function conversionMetrics({ siteId, from, to }: RangeArgs) {
 
 export async function realtimeVisitors(siteId: string) {
   const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
-  const rows = await prisma.event.findMany({
-    where: { siteId, occurredAt: { gte: fiveMinAgo }, isBot: false },
+  const baseWhere = { siteId, occurredAt: { gte: fiveMinAgo }, isBot: false } as const;
+
+  // Sequential: with a transaction-pooler `connection_limit=1`, fanning out
+  // four queries in parallel just queues them and risks pool-acquisition
+  // timeouts. Each query targets a small 5-minute window so total time stays
+  // well under any reasonable budget.
+  const active = await prisma.event.findMany({
+    where: baseWhere,
     distinct: ["visitorId"],
     select: { visitorId: true },
   });
-  return { activeVisitors: rows.length };
+  const recent = await prisma.event.findMany({
+    where: baseWhere,
+    orderBy: { occurredAt: "desc" },
+    take: 20,
+    select: {
+      id: true,
+      eventType: true,
+      eventName: true,
+      pagePath: true,
+      occurredAt: true,
+      country: true,
+      deviceType: true,
+      browser: true,
+    },
+  });
+  const byPage = await prisma.event.groupBy({
+    by: ["pagePath"],
+    where: { ...baseWhere, eventType: "page_view" },
+    _count: { _all: true },
+    orderBy: { _count: { pagePath: "desc" } },
+    take: 8,
+  });
+  const byCountry = await prisma.event.groupBy({
+    by: ["country"],
+    where: { ...baseWhere, country: { not: null } },
+    _count: { _all: true },
+    orderBy: { _count: { country: "desc" } },
+    take: 8,
+  });
+
+  return {
+    activeVisitors: active.length,
+    recent: recent.map((r) => ({
+      id: r.id,
+      type: r.eventType,
+      name: r.eventName,
+      path: r.pagePath ?? "/",
+      at: r.occurredAt.toISOString(),
+      country: r.country,
+      device: r.deviceType,
+      browser: r.browser,
+    })),
+    byPage: byPage.map((p) => ({
+      path: p.pagePath ?? "/",
+      views: p._count._all,
+    })),
+    byCountry: byCountry.map((c) => ({
+      country: c.country ?? "??",
+      sessions: c._count._all,
+    })),
+  };
 }

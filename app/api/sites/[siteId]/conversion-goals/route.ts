@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { requireUser, route } from "@/lib/get-user";
 import { assertSiteAccess } from "@/lib/ownership";
 import { conversionGoalSchema } from "@/lib/validation";
+import { createNotification } from "@/lib/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -35,5 +36,14 @@ export const POST = route<Params>(async (req, { params }) => {
       isActive: parsed.data.isActive ?? true,
     },
   });
+
+  await createNotification({
+    userId: user.id,
+    type: "goal_created",
+    title: `Goal "${goal.name}" is tracking`,
+    body: `New ${goal.goalType} goal on ${site.name}. Conversions will appear on the Conversions page.`,
+    link: `/sites/${site.id}/conversions`,
+  });
+
   return NextResponse.json({ goal });
 });

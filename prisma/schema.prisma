@@ -47,6 +47,24 @@ model User {
   ownedWorkspaces Workspace[]      @relation("WorkspaceOwner")
   memberships     WorkspaceMember[]
   auditLogs       AuditLog[]
+  notifications   Notification[]
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  body      String?
+  link      String?
+  isRead    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  readAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+  @@index([userId, createdAt])
 }
 
 model Workspace {
@@ -78,15 +96,18 @@ model WorkspaceMember {
 }
 
 model Site {
-  id          String     @id @default(cuid())
-  workspaceId String
-  name        String
-  domain      String
-  trackingId  String     @unique
-  status      SiteStatus @default(active)
-  timezone    String     @default("UTC")
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id              String     @id @default(cuid())
+  workspaceId     String
+  name            String
+  domain          String
+  trackingId      String     @unique
+  status          SiteStatus @default(active)
+  timezone        String     @default("UTC")
+  firstEventAt    DateTime?
+  lifetimeEvents  Int        @default(0)
+  lastMilestone   Int        @default(0)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 
   workspace        Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   sessions         Session[]

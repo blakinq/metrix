@@ -12,6 +12,7 @@ import { attribute, parseUtmFromUrl } from "@/lib/attribution";
 import { isBot } from "@/lib/bot-filter";
 import { rateLimitIngest } from "@/lib/rate-limit";
 import { processConversions } from "@/lib/conversions";
+import { processSiteMilestones } from "@/lib/notifications";
 import { log } from "@/lib/logger";
 
 export const runtime = "nodejs";
@@ -130,6 +131,14 @@ export async function POST(req: Request) {
 
     // Fire-and-forget conversion matching.
     processConversions(event).catch((err) => log.error("conversion_match_failed", { err: String(err) }));
+
+    // Fire-and-forget milestone notifications. Skip for bot traffic — we don't
+    // want bot floods to push milestone messages to users.
+    if (!bot) {
+      processSiteMilestones(site.id).catch((err) =>
+        log.error("milestone_check_failed", { err: String(err), siteId: site.id }),
+      );
+    }
   } catch (err) {
     log.error("ingest_failed", { err: String(err), siteId: site.id });
     return NextResponse.json({ error: "Internal error" }, { status: 500, headers: CORS });

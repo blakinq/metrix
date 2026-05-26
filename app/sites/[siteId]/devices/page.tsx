@@ -5,8 +5,8 @@ import { deviceBreakdown, browserBreakdown } from "@/lib/analytics";
 import { parseRange } from "@/lib/session";
 import { DateRangePicker } from "@/components/dashboard/date-range";
 import { DevicesDonut } from "@/components/charts/devices-donut";
+import { ShareRow } from "@/components/dashboard/share-row";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { formatNumber } from "@/lib/utils";
 
 export default async function DevicesPage({
@@ -21,14 +21,23 @@ export default async function DevicesPage({
   const site = await getSiteForUser(params.siteId, user.id);
   if (!site) notFound();
 
-  const range = parseRange(new URLSearchParams(searchParams as Record<string, string>));
+  const range = parseRange(
+    new URLSearchParams(searchParams as Record<string, string>),
+  );
   const args = { siteId: site.id, ...range };
-  const [devices, browsers] = await Promise.all([deviceBreakdown(args), browserBreakdown(args, 15)]);
+  const [devices, browsers] = await Promise.all([
+    deviceBreakdown(args),
+    browserBreakdown(args, 15),
+  ]);
+
+  const browserTotal = browsers.reduce((s, b) => s + b.sessions, 0) || 1;
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Devices</p>
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+          Devices
+        </p>
         <DateRangePicker />
       </div>
 
@@ -38,33 +47,44 @@ export default async function DevicesPage({
             <CardTitle>Device types</CardTitle>
           </CardHeader>
           <CardContent>
-            <DevicesDonut data={devices} />
+            {devices.length === 0 ? (
+              <p className="py-6 text-center text-sm text-muted-foreground">
+                No sessions in this range.
+              </p>
+            ) : (
+              <DevicesDonut data={devices} />
+            )}
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between gap-2">
             <CardTitle>Browsers</CardTitle>
+            <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+              {formatNumber(browserTotal)} sessions
+            </span>
           </CardHeader>
-          <CardContent className="px-0 pt-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="pl-6">Browser</TableHead>
-                  <TableHead className="pr-6 text-right">Sessions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+          <CardContent>
+            {browsers.length === 0 ? (
+              <p className="py-6 text-center text-sm text-muted-foreground">
+                No sessions in this range.
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-3.5">
                 {browsers.map((b) => (
-                  <TableRow key={b.browser}>
-                    <TableCell className="pl-6">{b.browser}</TableCell>
-                    <TableCell className="pr-6 text-right font-medium">
-                      {formatNumber(b.sessions)}
-                    </TableCell>
-                  </TableRow>
+                  <li key={b.browser}>
+                    <ShareRow
+                      label={
+                        <span className="text-foreground/90">{b.browser}</span>
+                      }
+                      value={formatNumber(b.sessions)}
+                      share={b.sessions / browserTotal}
+                      variant="chart-3"
+                    />
+                  </li>
                 ))}
-              </TableBody>
-            </Table>
+              </ul>
+            )}
           </CardContent>
         </Card>
       </div>

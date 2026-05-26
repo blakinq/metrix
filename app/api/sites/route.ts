@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { requireUser, route } from "@/lib/get-user";
 import { createSiteSchema } from "@/lib/validation";
 import { generateTrackingId } from "@/lib/ids";
+import { createNotification } from "@/lib/notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -60,6 +61,14 @@ export const POST = route(async (req) => {
       targetType: "site",
       targetId: site.id,
     },
+  });
+
+  await createNotification({
+    userId: user.id,
+    type: "site_created",
+    title: `${site.name} is ready to track`,
+    body: `Paste the snippet into ${site.domain} to start receiving events. Tracking ID: ${site.trackingId}.`,
+    link: `/sites/${site.id}/settings`,
   });
 
   return NextResponse.json({ site });

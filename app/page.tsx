@@ -196,16 +196,18 @@ export default function HomePage() {
           <h1
             className="display animate-fade-up text-balance text-5xl leading-[1.05] tracking-tight md:text-7xl"
           >
-            See what actually <em className="not-italic font-normal text-primary">moves</em>
-            <br className="hidden md:block" /> the needle.
+            The analytics you&rsquo;ll
+            <br className="hidden md:block" />{" "}
+            <em className="not-italic font-normal text-primary">actually</em>{" "}
+            open.
           </h1>
 
           <p
             className="mx-auto mt-6 max-w-xl animate-fade-up text-balance text-base text-muted-foreground md:text-lg"
             style={{ animationDelay: "80ms" }}
           >
-            A lightweight, privacy-friendly analytics platform for landing
-            pages, campaign sites, and small businesses.
+            Real-time visitors, sources, and conversions — without cookies,
+            sampling, or a 24-hour wait.
           </p>
 
           <div
@@ -231,12 +233,12 @@ export default function HomePage() {
             className="mt-6 animate-fade-up text-xs text-muted-foreground"
             style={{ animationDelay: "200ms" }}
           >
-            Free for 1 site · No credit card required
+            Free forever for 1 site · No card required
           </p>
         </div>
 
         {/* Dashboard preview */}
-        <div className="relative mx-auto -mt-6 max-w-6xl px-6 pb-20 md:-mt-4 md:px-10">
+        <div className="relative mx-auto mt-4 max-w-7xl px-6 pb-24 md:mt-8 md:px-10">
           <div className="animate-fade-up" style={{ animationDelay: "260ms" }}>
             <DashboardPreview />
           </div>
@@ -318,7 +320,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-12 overflow-hidden rounded-md border border-border bg-card shadow-2xl shadow-black/30">
+          <div className="mt-12 overflow-hidden rounded-md border border-border bg-card shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)] ring-1 ring-foreground/5">
             <div className="flex items-center justify-between border-b border-border/70 px-4 py-2.5">
               <span className="text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                 index.html
@@ -383,20 +385,20 @@ export default function HomePage() {
       {/* ───────────────────────  COMPARE  ─────────────────────────────── */}
       <section id="compare" className="relative border-t border-border/30 bg-card/20">
         <div className="relative mx-auto max-w-5xl px-6 py-24 md:px-10 md:py-32">
-          <div className="mb-12">
+          <div className="mb-12 text-center">
             <SectionEyebrow label="Compare" />
             <h2 className="display mt-4 text-balance text-4xl leading-[1.1] tracking-tight md:text-5xl">
               Metrix vs. Google Analytics 4.
             </h2>
           </div>
 
-          <div className="overflow-hidden rounded-md border border-border bg-card/60 shadow-2xl shadow-black/30 backdrop-blur">
+          <div className="overflow-hidden rounded-md border border-border bg-card/60 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.45)] ring-1 ring-foreground/5 backdrop-blur">
             <div className="grid grid-cols-3 border-b border-border bg-surface/60 text-xs uppercase tracking-[0.14em] text-muted-foreground">
-              <div className="p-4">Feature</div>
-              <div className="flex items-center gap-2 border-l border-primary/30 bg-primary/[0.04] p-4">
+              <div className="p-4 text-center">Feature</div>
+              <div className="flex items-center justify-center gap-2 border-l border-primary/30 bg-primary/[0.04] p-4">
                 <Logo size="sm" />
               </div>
-              <div className="flex items-center gap-2 border-l border-border p-4 text-muted-foreground/80">
+              <div className="flex items-center justify-center gap-2 border-l border-border p-4 text-muted-foreground/80">
                 Google Analytics 4
               </div>
             </div>
@@ -405,8 +407,8 @@ export default function HomePage() {
                 key={row.feature}
                 className={`grid grid-cols-3 border-b border-border/60 text-sm last:border-b-0 ${i % 2 === 0 ? "bg-card/50" : "bg-card/20"}`}
               >
-                <div className="p-4 text-foreground/85">{row.feature}</div>
-                <div className="flex items-center gap-2 border-l border-primary/30 bg-primary/[0.04] p-4">
+                <div className="p-4 text-center text-foreground/85">{row.feature}</div>
+                <div className="flex items-center justify-center gap-2 border-l border-primary/30 bg-primary/[0.04] p-4">
                   {typeof row.us === "boolean" ? (
                     row.us ? (
                       <Check className="h-4 w-4 text-primary" />
@@ -417,7 +419,7 @@ export default function HomePage() {
                     <span className="font-medium text-primary">{row.us}</span>
                   )}
                 </div>
-                <div className="flex items-center gap-2 border-l border-border p-4 text-muted-foreground">
+                <div className="flex items-center justify-center gap-2 border-l border-border p-4 text-muted-foreground">
                   {typeof row.them === "boolean" ? (
                     row.them ? (
                       <X className="h-4 w-4 text-destructive" />
@@ -503,7 +505,7 @@ export default function HomePage() {
       {/* ─────────────────────────  FAQ  ───────────────────────────────── */}
       <section id="faq" className="relative border-t border-border/30 bg-card/20">
         <div className="relative mx-auto max-w-3xl px-6 py-24 md:px-10 md:py-32">
-          <div className="mb-10">
+          <div className="mb-10 text-center">
             <SectionEyebrow label="FAQ" />
             <h2 className="display mt-4 text-balance text-4xl leading-[1.1] tracking-tight md:text-5xl">
               Questions, answered.
