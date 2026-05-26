@@ -26,8 +26,9 @@ export default async function DevicesPage({
   const [devices, browsers] = await Promise.all([deviceBreakdown(args), browserBreakdown(args, 15)]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Devices</p>
         <DateRangePicker />
       </div>
 
@@ -45,19 +46,21 @@ export default async function DevicesPage({
           <CardHeader>
             <CardTitle>Browsers</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0 pt-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Browser</TableHead>
-                  <TableHead className="text-right">Sessions</TableHead>
+                  <TableHead className="pl-6">Browser</TableHead>
+                  <TableHead className="pr-6 text-right">Sessions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {browsers.map((b) => (
                   <TableRow key={b.browser}>
-                    <TableCell>{b.browser}</TableCell>
-                    <TableCell className="text-right">{formatNumber(b.sessions)}</TableCell>
+                    <TableCell className="pl-6">{b.browser}</TableCell>
+                    <TableCell className="pr-6 text-right font-medium">
+                      {formatNumber(b.sessions)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

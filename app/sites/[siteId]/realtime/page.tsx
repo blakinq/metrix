@@ -27,14 +27,32 @@ export default function RealtimePage() {
   }, [siteId]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Realtime visitors</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="text-6xl font-semibold">{active ?? "—"}</div>
-        <p className="mt-2 text-sm text-muted-foreground">Active in the last 5 minutes. Updates every 10s.</p>
-      </CardContent>
-    </Card>
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center gap-2">
+        <span className="live-dot" />
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Realtime</p>
+      </div>
+
+      <Card className="relative overflow-hidden">
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-32 -top-32 h-64 w-64 rounded-full bg-primary/10 blur-3xl"
+        />
+        <CardHeader>
+          <CardTitle>Visitors active right now</CardTitle>
+        </CardHeader>
+        <CardContent className="relative">
+          <div className="flex items-baseline gap-3">
+            <span className="stat-num text-7xl font-medium text-foreground">
+              {active ?? "—"}
+            </span>
+            <span className="text-sm text-muted-foreground">currently</span>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground">
+            Active in the last 5 minutes · refreshes every 10s
+          </p>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

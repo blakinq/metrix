@@ -32,13 +32,14 @@ export default async function OverviewPage({ params, searchParams }: Props) {
   ]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Overview</p>
         <DateRangePicker />
       </div>
 
       <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        <MetricCard label="Visitors" value={formatNumber(metrics.uniqueVisitors)} />
+        <MetricCard label="Visitors" value={formatNumber(metrics.uniqueVisitors)} accent />
         <MetricCard label="Pageviews" value={formatNumber(metrics.pageviews)} />
         <MetricCard label="Sessions" value={formatNumber(metrics.sessions)} />
         <MetricCard label="Bounce rate" value={formatPercent(metrics.bounceRate)} />
@@ -51,6 +52,16 @@ export default async function OverviewPage({ params, searchParams }: Props) {
       <Card>
         <CardHeader>
           <CardTitle>Pageviews over time</CardTitle>
+          <div className="mt-1 flex items-center gap-4 text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-chart-1" />
+              Pageviews
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-1.5 rounded-full bg-chart-2" />
+              Visitors
+            </span>
+          </div>
         </CardHeader>
         <CardContent>
           <PageviewsChart data={series} />
@@ -62,19 +73,23 @@ export default async function OverviewPage({ params, searchParams }: Props) {
           <CardHeader>
             <CardTitle>Top pages</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0 pt-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Path</TableHead>
-                  <TableHead className="text-right">Views</TableHead>
+                  <TableHead className="pl-6">Path</TableHead>
+                  <TableHead className="pr-6 text-right">Views</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {pages.map((p) => (
                   <TableRow key={p.pagePath}>
-                    <TableCell className="font-mono text-xs">{p.pagePath}</TableCell>
-                    <TableCell className="text-right">{formatNumber(p.pageviews)}</TableCell>
+                    <TableCell className="pl-6 font-mono text-xs text-foreground/85">
+                      {p.pagePath}
+                    </TableCell>
+                    <TableCell className="pr-6 text-right font-medium">
+                      {formatNumber(p.pageviews)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -86,21 +101,23 @@ export default async function OverviewPage({ params, searchParams }: Props) {
           <CardHeader>
             <CardTitle>Top traffic sources</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-0 pt-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Source</TableHead>
+                  <TableHead className="pl-6">Source</TableHead>
                   <TableHead>Medium</TableHead>
-                  <TableHead className="text-right">Sessions</TableHead>
+                  <TableHead className="pr-6 text-right">Sessions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sources.map((s) => (
                   <TableRow key={`${s.source}/${s.medium}`}>
-                    <TableCell>{s.source}</TableCell>
+                    <TableCell className="pl-6">{s.source}</TableCell>
                     <TableCell className="text-muted-foreground">{s.medium}</TableCell>
-                    <TableCell className="text-right">{formatNumber(s.sessions)}</TableCell>
+                    <TableCell className="pr-6 text-right font-medium">
+                      {formatNumber(s.sessions)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

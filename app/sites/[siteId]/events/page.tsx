@@ -24,35 +24,49 @@ export default async function EventsPage({
   const events = await customEvents({ siteId: site.id, ...range });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Events</p>
         <DateRangePicker />
       </div>
       <Card>
         <CardHeader>
           <CardTitle>Custom events</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className={events.length === 0 ? undefined : "px-0 pt-0"}>
           {events.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No custom events yet. Use <code className="font-mono">window.metrix.track()</code> or{" "}
-              <code className="font-mono">data-metrix-event</code> attributes to start tracking.
+              No custom events yet. Use{" "}
+              <code className="rounded-sm bg-surface px-1.5 py-0.5 font-mono text-xs text-foreground">
+                window.metrix.track()
+              </code>{" "}
+              or{" "}
+              <code className="rounded-sm bg-surface px-1.5 py-0.5 font-mono text-xs text-foreground">
+                data-metrix-event
+              </code>{" "}
+              attributes to start tracking.
             </p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Type</TableHead>
+                  <TableHead className="pl-6">Type</TableHead>
                   <TableHead>Name</TableHead>
-                  <TableHead className="text-right">Count</TableHead>
+                  <TableHead className="pr-6 text-right">Count</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {events.map((e) => (
                   <TableRow key={`${e.eventType}/${e.eventName}`}>
-                    <TableCell>{e.eventType}</TableCell>
+                    <TableCell className="pl-6">
+                      <span className="font-mono text-xs text-foreground/85">
+                        {e.eventType}
+                      </span>
+                    </TableCell>
                     <TableCell>{e.eventName}</TableCell>
-                    <TableCell className="text-right">{formatNumber(e.count)}</TableCell>
+                    <TableCell className="pr-6 text-right font-medium">
+                      {formatNumber(e.count)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -29,35 +29,44 @@ export default async function AdminPage() {
   const lookup = new Map(siteMeta.map((s) => [s.id, s]));
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Admin</h1>
+    <div className="flex flex-col gap-6">
+      <div>
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">System</p>
+        <h1 className="display mt-1 text-3xl tracking-tight">Admin</h1>
+      </div>
 
       <div className="grid gap-4 md:grid-cols-4">
         <MetricCard label="Users" value={formatNumber(users)} />
         <MetricCard label="Workspaces" value={formatNumber(workspaces)} />
         <MetricCard label="Sites" value={formatNumber(sites)} />
-        <MetricCard label="Events today" value={formatNumber(eventsToday)} />
+        <MetricCard label="Events today" value={formatNumber(eventsToday)} accent />
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Top sites by event volume today</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Site</TableHead>
+                <TableHead className="pl-6">Site</TableHead>
                 <TableHead>Domain</TableHead>
-                <TableHead className="text-right">Events</TableHead>
+                <TableHead className="pr-6 text-right">Events</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {topSites.map((s) => (
                 <TableRow key={s.siteId}>
-                  <TableCell>{lookup.get(s.siteId)?.name ?? s.siteId}</TableCell>
-                  <TableCell className="text-muted-foreground">{lookup.get(s.siteId)?.domain ?? ""}</TableCell>
-                  <TableCell className="text-right">{formatNumber(s._count._all)}</TableCell>
+                  <TableCell className="pl-6">
+                    {lookup.get(s.siteId)?.name ?? s.siteId}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {lookup.get(s.siteId)?.domain ?? ""}
+                  </TableCell>
+                  <TableCell className="pr-6 text-right font-medium">
+                    {formatNumber(s._count._all)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -69,21 +78,23 @@ export default async function AdminPage() {
         <CardHeader>
           <CardTitle>Recent audit log</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>When</TableHead>
+                <TableHead className="pl-6">When</TableHead>
                 <TableHead>Action</TableHead>
-                <TableHead>Target</TableHead>
+                <TableHead className="pr-6">Target</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {audit.map((a) => (
                 <TableRow key={a.id}>
-                  <TableCell className="text-xs text-muted-foreground">{a.createdAt.toISOString()}</TableCell>
+                  <TableCell className="pl-6 font-mono text-xs text-muted-foreground">
+                    {a.createdAt.toISOString()}
+                  </TableCell>
                   <TableCell>{a.action}</TableCell>
-                  <TableCell className="font-mono text-xs">
+                  <TableCell className="pr-6 font-mono text-xs">
                     {a.targetType}:{a.targetId}
                   </TableCell>
                 </TableRow>

@@ -10,9 +10,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!me?.isSuperAdmin) notFound();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col bg-background">
       <DashboardHeader />
-      <main className="flex-1 px-6 py-8">{children}</main>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 md:px-10">{children}</main>
     </div>
   );
 }

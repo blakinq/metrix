@@ -26,8 +26,9 @@ export default async function ConversionsPage({
   const conversions = await conversionMetrics({ siteId: site.id, ...range });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Conversions</p>
         <DateRangePicker />
       </div>
 
@@ -35,28 +36,36 @@ export default async function ConversionsPage({
         <CardHeader>
           <CardTitle>Conversion goals</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className={conversions.length === 0 ? undefined : "px-0 pt-0"}>
           {conversions.length === 0 ? (
-            <p className="mb-4 text-sm text-muted-foreground">No goals yet. Create your first one below.</p>
+            <p className="text-sm text-muted-foreground">
+              No goals yet. Create your first one below.
+            </p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Goal</TableHead>
+                  <TableHead className="pl-6">Goal</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Conversions</TableHead>
+                  <TableHead className="pr-6 text-right">Conversions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {conversions.map((c) => (
                   <TableRow key={c.id}>
-                    <TableCell className="font-medium">{c.name}</TableCell>
-                    <TableCell className="text-muted-foreground">{c.goalType}</TableCell>
-                    <TableCell>
-                      <Badge>{c.isActive ? "active" : "paused"}</Badge>
+                    <TableCell className="pl-6 font-medium">{c.name}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground">
+                      {c.goalType}
                     </TableCell>
-                    <TableCell className="text-right">{formatNumber(c.conversions)}</TableCell>
+                    <TableCell>
+                      <Badge variant={c.isActive ? "success" : "outline"}>
+                        {c.isActive ? "active" : "paused"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="pr-6 text-right font-medium">
+                      {formatNumber(c.conversions)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

@@ -25,14 +25,15 @@ export default async function SourcesPage({
   const sources = await topSources({ siteId: site.id, ...range }, 50);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Sources</p>
         <DateRangePicker />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Traffic sources</CardTitle>
+          <CardTitle>Top sources</CardTitle>
         </CardHeader>
         <CardContent>
           <SourcesBar data={sources.slice(0, 10)} />
@@ -43,21 +44,23 @@ export default async function SourcesPage({
         <CardHeader>
           <CardTitle>All sources</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Source</TableHead>
+                <TableHead className="pl-6">Source</TableHead>
                 <TableHead>Medium</TableHead>
-                <TableHead className="text-right">Sessions</TableHead>
+                <TableHead className="pr-6 text-right">Sessions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {sources.map((s) => (
                 <TableRow key={`${s.source}/${s.medium}`}>
-                  <TableCell>{s.source}</TableCell>
+                  <TableCell className="pl-6">{s.source}</TableCell>
                   <TableCell className="text-muted-foreground">{s.medium}</TableCell>
-                  <TableCell className="text-right">{formatNumber(s.sessions)}</TableCell>
+                  <TableCell className="pr-6 text-right font-medium">
+                    {formatNumber(s.sessions)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

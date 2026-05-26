@@ -24,27 +24,32 @@ export default async function PagesPage({
   const pages = await topPages({ siteId: site.id, ...range }, 100);
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Pages</p>
         <DateRangePicker />
       </div>
       <Card>
         <CardHeader>
           <CardTitle>All pages</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Path</TableHead>
-                <TableHead className="text-right">Pageviews</TableHead>
+                <TableHead className="pl-6">Path</TableHead>
+                <TableHead className="pr-6 text-right">Pageviews</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {pages.map((p) => (
                 <TableRow key={p.pagePath}>
-                  <TableCell className="font-mono text-xs">{p.pagePath}</TableCell>
-                  <TableCell className="text-right">{formatNumber(p.pageviews)}</TableCell>
+                  <TableCell className="pl-6 font-mono text-xs text-foreground/85">
+                    {p.pagePath}
+                  </TableCell>
+                  <TableCell className="pr-6 text-right font-medium">
+                    {formatNumber(p.pageviews)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

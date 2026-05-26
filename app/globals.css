@@ -4,57 +4,300 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light theme — used as fallback; the app defaults to dark. */
+    --background: 40 12% 97%;
+    --foreground: 220 18% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 18% 10%;
+    --surface: 40 14% 95%;
+    --surface-foreground: 220 18% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --popover-foreground: 220 18% 10%;
+    --primary: 75 78% 42%;
+    --primary-foreground: 220 25% 6%;
+    --secondary: 220 14% 94%;
+    --secondary-foreground: 220 18% 14%;
+    --muted: 220 14% 94%;
+    --muted-foreground: 220 10% 42%;
+    --accent: 220 14% 94%;
+    --accent-foreground: 220 18% 14%;
+    --destructive: 358 70% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 75 78% 42%;
     --radius: 0.5rem;
-    --chart-1: 221 83% 53%;
-    --chart-2: 142 71% 45%;
-    --chart-3: 38 92% 50%;
-    --chart-4: 271 81% 56%;
-    --chart-5: 0 84% 60%;
+
+    --chart-1: 75 90% 55%;
+    --chart-2: 188 90% 55%;
+    --chart-3: 38 95% 60%;
+    --chart-4: 268 75% 65%;
+    --chart-5: 340 80% 62%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    /* Deep, near-black with a cool undertone. Surfaces lift in 2% steps. */
+    --background: 220 18% 5%;
+    --foreground: 220 14% 96%;
+
+    --card: 220 16% 7%;
+    --card-foreground: 220 14% 96%;
+    --surface: 220 16% 9%;
+    --surface-foreground: 220 14% 96%;
+    --popover: 220 18% 6%;
+    --popover-foreground: 220 14% 96%;
+
+    /* Electric lime — restrained accent for the dataset feel. */
+    --primary: 75 95% 62%;
+    --primary-foreground: 220 30% 6%;
+
+    --secondary: 220 14% 12%;
+    --secondary-foreground: 220 14% 90%;
+
+    --muted: 220 14% 11%;
+    --muted-foreground: 220 9% 58%;
+
+    --accent: 220 14% 14%;
+    --accent-foreground: 220 14% 96%;
+
+    --destructive: 358 75% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 14%;
+    --input: 220 14% 14%;
+    --ring: 75 95% 62%;
+
+    --chart-1: 75 95% 62%;
+    --chart-2: 188 85% 60%;
+    --chart-3: 38 95% 62%;
+    --chart-4: 268 75% 68%;
+    --chart-5: 340 82% 65%;
   }
 }
 
 @layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground; }
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "cv02", "cv03", "cv04";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tabular numerics by default for data-heavy UI. */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.25);
+    color: hsl(var(--foreground));
+  }
+
+  /* Thin, refined scrollbar — dark mode. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 9999px;
+    border: 3px solid hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+}
+
+@layer components {
+  /* Subtle grain overlay applied to top-level containers. */
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    background-size: 180px 180px;
+  }
+
+  /* Dotted grid backdrop. */
+  .bg-grid {
+    background-image: radial-gradient(
+      hsl(var(--foreground) / 0.06) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+    background-position: -1px -1px;
+  }
+
+  /* Fine grid with thicker accent every 4 cells — blueprint vibe. */
+  .bg-grid-fine {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.025) 1px, transparent 1px),
+      linear-gradient(to right, hsl(var(--foreground) / 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.06) 1px, transparent 1px);
+    background-size: 24px 24px, 24px 24px, 96px 96px, 96px 96px;
+  }
+
+  /* Plus signs at intersections — softer than full grid. */
+  .bg-plus {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><g stroke='white' stroke-opacity='0.07' stroke-width='1' fill='none' stroke-linecap='round'><path d='M20 16v8M16 20h8'/></g></svg>");
+    background-size: 40px 40px;
+  }
+
+  /* Soft diagonal lines (45deg). */
+  .bg-lines {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 22px,
+      hsl(var(--foreground) / 0.025) 22px,
+      hsl(var(--foreground) / 0.025) 23px
+    );
+  }
+
+  /* Horizontal scan lines — very subtle. */
+  .bg-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 3px,
+      hsl(var(--foreground) / 0.018) 3px,
+      hsl(var(--foreground) / 0.018) 4px
+    );
+  }
+
+  /* Concentric radial rings — for the realtime/pulse feel. */
+  .bg-rings {
+    background-image: repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0,
+      transparent 40px,
+      hsl(var(--foreground) / 0.025) 40px,
+      hsl(var(--foreground) / 0.025) 41px
+    );
+  }
+
+  /* A soft directional glow — primary + chart-2 accent. */
+  .bg-glow {
+    background:
+      radial-gradient(
+        60% 50% at 15% 0%,
+        hsl(var(--primary) / 0.12),
+        transparent 70%
+      ),
+      radial-gradient(
+        45% 35% at 100% 100%,
+        hsl(188 85% 60% / 0.08),
+        transparent 70%
+      );
+  }
+
+  /* Aurora-style multi-blob glow. */
+  .bg-aurora {
+    background:
+      radial-gradient(40% 30% at 20% 30%, hsl(var(--primary) / 0.08), transparent 70%),
+      radial-gradient(35% 40% at 85% 25%, hsl(188 85% 60% / 0.06), transparent 70%),
+      radial-gradient(50% 40% at 60% 90%, hsl(268 75% 68% / 0.06), transparent 70%);
+  }
+
+  /* Top spotlight — radial from top center, fades down. */
+  .bg-spotlight-top {
+    background: radial-gradient(
+      60% 40% at 50% 0%,
+      hsl(var(--primary) / 0.10),
+      transparent 70%
+    );
+  }
+
+  /* Bottom spotlight. */
+  .bg-spotlight-bottom {
+    background: radial-gradient(
+      60% 40% at 50% 100%,
+      hsl(var(--primary) / 0.08),
+      transparent 70%
+    );
+  }
+
+  /* Vertical fade mask — apply on a parent to soften edges. */
+  .mask-fade-y {
+    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 70%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent);
+  }
+
+  /* Live status dot used for realtime indicators. */
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: hsl(var(--primary));
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0.45);
+  }
+  .live-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: hsl(var(--primary));
+    animation: live-ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes live-ping {
+    0% {
+      transform: scale(1);
+      opacity: 0.6;
+    }
+    80%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* Display headline — slight optical correction for serif italic. */
+  .display {
+    font-family: var(--font-display), ui-serif, Georgia, serif;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  /* Numeric display for big metric values. */
+  .stat-num {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "tnum", "ss01";
+    letter-spacing: -0.035em;
+  }
 }

@@ -24,27 +24,30 @@ export default async function CountriesPage({
   const countries = await countryBreakdown({ siteId: site.id, ...range });
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-end">
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">Countries</p>
         <DateRangePicker />
       </div>
       <Card>
         <CardHeader>
           <CardTitle>Countries</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 pt-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Country</TableHead>
-                <TableHead className="text-right">Sessions</TableHead>
+                <TableHead className="pl-6">Country</TableHead>
+                <TableHead className="pr-6 text-right">Sessions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {countries.map((c) => (
                 <TableRow key={c.country}>
-                  <TableCell>{c.country}</TableCell>
-                  <TableCell className="text-right">{formatNumber(c.sessions)}</TableCell>
+                  <TableCell className="pl-6">{c.country}</TableCell>
+                  <TableCell className="pr-6 text-right font-medium">
+                    {formatNumber(c.sessions)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

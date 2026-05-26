@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -88,11 +89,17 @@ export function ConversionGoalForm({ siteId }: { siteId: string }) {
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2 md:col-span-2">
+          <div className="flex flex-col gap-2 md:col-span-2">
             <Label htmlFor="goal-name">Goal name</Label>
-            <Input id="goal-name" required value={name} onChange={(e) => setName(e.target.value)} placeholder="WhatsApp CTA" />
+            <Input
+              id="goal-name"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="WhatsApp CTA"
+            />
           </div>
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <Label>Goal type</Label>
             <Select value={goalType} onValueChange={setGoalType}>
               <SelectTrigger>
@@ -109,31 +116,58 @@ export function ConversionGoalForm({ siteId }: { siteId: string }) {
           </div>
 
           {goalType === "page_visit" ? (
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="path">Page path</Label>
-              <Input id="path" required value={pagePath} onChange={(e) => setPagePath(e.target.value)} placeholder="/thank-you" />
+              <Input
+                id="path"
+                required
+                value={pagePath}
+                onChange={(e) => setPagePath(e.target.value)}
+                placeholder="/thank-you"
+              />
             </div>
           ) : goalType === "custom_event" ? (
             <>
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="event-type">Event type</Label>
-                <Input id="event-type" value={eventType} onChange={(e) => setEventType(e.target.value)} placeholder="button_click" />
+                <Input
+                  id="event-type"
+                  value={eventType}
+                  onChange={(e) => setEventType(e.target.value)}
+                  placeholder="button_click"
+                />
               </div>
-              <div className="space-y-2 md:col-span-2">
+              <div className="flex flex-col gap-2 md:col-span-2">
                 <Label htmlFor="event-name">Event name</Label>
-                <Input id="event-name" value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="whatsapp_click" />
+                <Input
+                  id="event-name"
+                  value={eventName}
+                  onChange={(e) => setEventName(e.target.value)}
+                  placeholder="whatsapp_click"
+                />
               </div>
             </>
           ) : (
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="event-name">Event name (from data-metrix-event)</Label>
-              <Input id="event-name" required value={eventName} onChange={(e) => setEventName(e.target.value)} placeholder="whatsapp_click" />
+              <Input
+                id="event-name"
+                required
+                value={eventName}
+                onChange={(e) => setEventName(e.target.value)}
+                placeholder="whatsapp_click"
+              />
             </div>
           )}
 
-          {error && <p className="text-sm text-destructive md:col-span-2">{error}</p>}
+          {error && (
+            <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs text-destructive md:col-span-2">
+              {error}
+            </p>
+          )}
           <div className="md:col-span-2">
             <Button type="submit" disabled={loading}>
+              <Plus className="h-4 w-4" />
               {loading ? "Creating..." : "Create goal"}
             </Button>
           </div>

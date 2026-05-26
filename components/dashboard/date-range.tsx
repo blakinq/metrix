@@ -1,7 +1,14 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PRESETS = [
   { value: "today", label: "Today" },
@@ -28,7 +35,10 @@ export function DateRangePicker() {
   return (
     <Select value={current} onValueChange={onChange}>
       <SelectTrigger className="w-44">
-        <SelectValue />
+        <span className="flex items-center gap-2">
+          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+          <SelectValue />
+        </span>
       </SelectTrigger>
       <SelectContent>
         {PRESETS.map((p) => (
