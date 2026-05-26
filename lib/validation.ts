@@ -9,7 +9,7 @@ export const trackEventSchema = z.object({
   pageUrl: z.string().max(2048).optional(),
   pagePath: z.string().max(2048).optional(),
   pageTitle: z.string().max(512).optional(),
-  referrer: z.string().max(2048).optional(),
+  referrer: z.string().max(2048).nullable().optional(),
   title: z.string().max(512).optional(),
   screenWidth: z.number().int().min(0).max(20000).optional(),
   screenHeight: z.number().int().min(0).max(20000).optional(),
