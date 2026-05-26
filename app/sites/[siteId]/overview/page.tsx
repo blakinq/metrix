@@ -123,16 +123,18 @@ export default async function OverviewPage({ params, searchParams }: Props) {
         <MetricCard
           label="Top page"
           value={pages[0]?.pagePath ?? "—"}
-          sub={pages[0] ? formatNumber(pages[0].pageviews) + " views" : undefined}
+          sub={pages[0] ? `${formatNumber(pages[0].pageviews)} views` : undefined}
+          inline
         />
         <MetricCard
           label="Top source"
           value={sources[0]?.source ?? "—"}
           sub={
             sources[0]
-              ? formatNumber(sources[0].sessions) + " sessions"
+              ? `${formatNumber(sources[0].sessions)} sessions`
               : undefined
           }
+          inline
         />
       </div>
 
