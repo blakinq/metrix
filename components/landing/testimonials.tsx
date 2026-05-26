@@ -27,7 +27,7 @@ export function Testimonials() {
           </h2>
           <p className="mt-4 max-w-lg text-base text-muted-foreground">
             Indie hackers, agencies, growth marketers, and small business
-            owners — running on Metrix.
+            owners, all running on Metrix.
           </p>
         </div>
 

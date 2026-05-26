@@ -185,7 +185,7 @@ export function DashboardPreview() {
                   Overview
                 </span>
                 <span className="hidden text-[10px] uppercase tracking-[0.16em] text-muted-foreground md:inline">
-                  May 19 — May 25
+                  May 19 to May 25
                 </span>
               </div>
               <div className="flex items-center gap-1.5">

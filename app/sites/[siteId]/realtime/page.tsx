@@ -105,7 +105,7 @@ export default function RealtimePage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Top pages — last 5 min</CardTitle>
+            <CardTitle>Top pages · last 5 min</CardTitle>
           </CardHeader>
           <CardContent>
             {!data || data.byPage.length === 0 ? (
@@ -135,7 +135,7 @@ export default function RealtimePage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Top countries — last 5 min</CardTitle>
+            <CardTitle>Top countries · last 5 min</CardTitle>
           </CardHeader>
           <CardContent>
             {!data || data.byCountry.length === 0 ? (

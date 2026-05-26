@@ -37,7 +37,7 @@ export default function SignupPage() {
     const result = await signIn("credentials", { email, password, redirect: false });
     setLoading(false);
     if (result?.error) {
-      setError("Account created, but sign-in failed. Try logging in.");
+      setError("Account created, but sign in failed. Try logging in.");
       return;
     }
     router.push("/sites");
@@ -60,7 +60,7 @@ export default function SignupPage() {
               Create your <em className="text-primary not-italic font-normal">account</em>.
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              Start tracking visitors in minutes — no credit card required.
+              Start tracking visitors in minutes. No credit card required.
             </p>
           </div>
 

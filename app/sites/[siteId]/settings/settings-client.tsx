@@ -173,7 +173,7 @@ export function SettingsClient({ site, trackerUrl }: { site: Site; trackerUrl: s
       <Card className="border-destructive/30">
         <CardHeader>
           <CardTitle className="text-destructive">Danger zone</CardTitle>
-          <CardDescription>Soft-deletes the site. Data is retained for recovery.</CardDescription>
+          <CardDescription>Soft deletes the site. Data is retained for recovery.</CardDescription>
         </CardHeader>
         <CardContent>
           <Button

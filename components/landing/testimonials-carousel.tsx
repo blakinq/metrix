@@ -23,7 +23,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "The real-time view is what sold me. We push a campaign, watch visitors arrive live, and adjust copy in the same hour.",
+      "The realtime view is what sold me. We push a campaign, watch visitors arrive live, and adjust copy in the same hour.",
     name: "Daniel Park",
     role: "Growth lead, Saplink",
     initials: "DP",
@@ -31,14 +31,14 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "Finally — analytics that don't make me feel like I'm being audited. The numbers are clear, the script is invisible, and there's no cookie banner.",
+      "Finally, analytics that don't make me feel like I'm being audited. The numbers are clear, the script is invisible, and there's no cookie banner.",
     name: "Priya Raman",
     role: "Indie hacker",
     initials: "PR",
   },
   {
     quote:
-      "Conversion goals took two minutes to set up. WhatsApp clicks, form submits, phone taps — all tracked, all in one place.",
+      "Conversion goals took two minutes to set up. WhatsApp clicks, form submits, phone taps, all tracked, all in one place.",
     name: "Marco Bianchi",
     role: "Owner, Bianchi Property",
     initials: "MB",
@@ -54,7 +54,7 @@ const TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "The script is so small I had to check twice. Page-speed score went up 4 points the day we migrated.",
+      "The script is so small I had to check twice. Page speed score went up 4 points the day we migrated.",
     name: "Toby Ellis",
     role: "Engineer, Field Notes Co.",
     initials: "TE",

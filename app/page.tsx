@@ -29,12 +29,12 @@ const FEATURES = [
   {
     icon: Zap,
     title: "Lightweight tracker",
-    body: "A single async script. No jQuery, no dependencies, no render-blocking.",
+    body: "A single async script. No jQuery, no dependencies, no render blocking.",
   },
   {
     icon: Activity,
-    title: "Real-time view",
-    body: "See visitors as they arrive. No 24-hour delay, no sampling.",
+    title: "Realtime view",
+    body: "See visitors as they arrive. No 24 hour delay, no sampling.",
   },
   {
     icon: Target,
@@ -44,12 +44,12 @@ const FEATURES = [
   {
     icon: BarChart3,
     title: "Built for clarity",
-    body: "The metrics that inform decisions — visitors, sources, pages, conversions. Nothing else.",
+    body: "The metrics that inform decisions: visitors, sources, pages, conversions. Nothing else.",
   },
   {
     icon: Code2,
     title: "Your data, exported",
-    body: "CSV export for events, sessions, pages, sources, and conversions. No lock-in.",
+    body: "CSV export for events, sessions, pages, sources, and conversions. No lock in.",
   },
 ];
 
@@ -62,7 +62,7 @@ const STEPS = [
   {
     icon: Flag,
     title: "Set your goals",
-    body: "Pick what counts as a conversion — page visits, clicks, form submits. No code required.",
+    body: "Pick what counts as a conversion: page visits, clicks, form submits. No code required.",
   },
   {
     icon: Eye,
@@ -86,7 +86,7 @@ const PLANS = [
     price: "$0",
     cadence: "forever",
     blurb: "For a single landing page or side project.",
-    features: ["1 site", "10k events / month", "30-day history", "Real-time view", "CSV export"],
+    features: ["1 site", "10k events / month", "30 day history", "Realtime view", "CSV export"],
     cta: "Start tracking",
     href: "/signup",
     accent: false,
@@ -103,7 +103,7 @@ const PLANS = [
       "Conversion goals",
       "Email reports",
     ],
-    cta: "Start 14-day trial",
+    cta: "Start 14 day trial",
     href: "/signup",
     accent: true,
   },
@@ -119,7 +119,7 @@ const PLANS = [
       "REST API access",
       "Custom retention",
     ],
-    cta: "Start 14-day trial",
+    cta: "Start 14 day trial",
     href: "/signup",
     accent: false,
   },
@@ -128,11 +128,11 @@ const PLANS = [
 const FAQS = [
   {
     q: "Does Metrix use cookies?",
-    a: "By default, the tracker sets a first-party cookie (metrix_visitor_id) to recognise returning visitors. Add data-consent=\"cookieless\" to the script tag and no cookies are written — visitor IDs become ephemeral per page. Do Not Track is always respected.",
+    a: "By default, the tracker sets a first party cookie (metrix_visitor_id) to recognise returning visitors. Add data-consent=\"cookieless\" to the script tag and no cookies are written. Visitor IDs become ephemeral per page. Do Not Track is always respected.",
   },
   {
     q: "How is this different from Google Analytics?",
-    a: "Metrix focuses on a small set of metrics that inform decisions: visitors, sources, pages, conversions. No 24-hour processing delay, no sampling, and no Tag Manager required.",
+    a: "Metrix focuses on a small set of metrics that inform decisions: visitors, sources, pages, conversions. No 24 hour processing delay, no sampling, and no Tag Manager required.",
   },
   {
     q: "Can I track conversions?",
@@ -144,10 +144,10 @@ const FAQS = [
   },
   {
     q: "Do you offer a free plan?",
-    a: "Yes — 1 site, 10k events per month, 30-day history, real-time view. No credit card required.",
+    a: "Yes. 1 site, 10k events per month, 30 day history, realtime view. No credit card required.",
   },
   {
-    q: "Can I self-host the tracker?",
+    q: "Can I self host the tracker?",
     a: "Yes. /tracker.js is a single file you can copy to your own CDN if you want full control over delivery.",
   },
 ];
@@ -206,8 +206,8 @@ export default function HomePage() {
             className="mx-auto mt-6 max-w-xl animate-fade-up text-balance text-base text-muted-foreground md:text-lg"
             style={{ animationDelay: "80ms" }}
           >
-            Real-time visitors, sources, and conversions — without cookies,
-            sampling, or a 24-hour wait.
+            Realtime visitors, sources, and conversions. Without cookies,
+            sampling, or a 24 hour wait.
           </p>
 
           <div
@@ -218,7 +218,7 @@ export default function HomePage() {
               href="/signup"
               className="group inline-flex items-center gap-1.5 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90"
             >
-              Start tracking — free
+              Start tracking for free
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
@@ -340,7 +340,7 @@ export default function HomePage() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="size-1 rounded-full bg-primary" />
-              Async — never blocks render
+              Async, never blocks render
             </span>
             <span className="flex items-center gap-1.5">
               <span className="size-1 rounded-full bg-primary" />
@@ -348,7 +348,7 @@ export default function HomePage() {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="size-1 rounded-full bg-primary" />
-              Self-hostable
+              Self hostable
             </span>
           </div>
 
@@ -369,12 +369,12 @@ export default function HomePage() {
       <section className="relative border-t border-border/30 bg-card/10">
         <div className="relative mx-auto max-w-4xl px-6 py-24 md:px-10 md:py-32">
           <div className="mb-12 text-center">
-            <SectionEyebrow label="Real-time" />
+            <SectionEyebrow label="Realtime" />
             <h2 className="display mt-4 text-balance text-4xl leading-[1.1] tracking-tight md:text-5xl">
               Watch your launch <em className="not-italic font-normal text-primary">live</em>.
             </h2>
             <p className="mx-auto mt-4 max-w-md text-base text-muted-foreground">
-              No 24-hour delays. Visitors appear in the feed as they arrive.
+              No 24 hour delays. Visitors appear in the feed as they arrive.
             </p>
           </div>
 

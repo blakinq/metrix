@@ -24,7 +24,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Metrix — Privacy-friendly analytics",
+  title: "Metrix · Privacy friendly analytics",
   description:
     "Lightweight analytics and conversion tracking for small businesses, landing pages, and campaign sites.",
 };
