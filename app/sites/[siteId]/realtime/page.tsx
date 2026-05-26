@@ -91,7 +91,7 @@ export default function RealtimePage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-baseline gap-3">
-            <span className="stat-num text-6xl font-medium text-foreground">
+            <span className="stat-num text-3xl font-medium text-foreground">
               {active ?? "—"}
             </span>
             <span className="text-sm text-muted-foreground">currently</span>

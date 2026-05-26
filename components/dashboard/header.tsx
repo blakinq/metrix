@@ -90,7 +90,7 @@ export function DashboardHeader({
             <Search className="h-3.5 w-3.5" />
             <span className="flex-1 text-left">Search sites…</span>
             <kbd className="font-mono text-[10px] text-muted-foreground/70">
-              ⌘K
+              ⌘ + K
             </kbd>
           </button>
           <NotificationBell initialUnread={initialUnread} />
