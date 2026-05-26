@@ -137,14 +137,17 @@
     try {
       var body = JSON.stringify(payload);
       if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: "application/json" });
+        // text/plain keeps this a "simple" CORS request — no preflight, and
+        // avoids an iOS Safari bug that blocks beacons with application/json.
+        // Server reads body with req.json(), which ignores Content-Type.
+        var blob = new Blob([body], { type: "text/plain;charset=UTF-8" });
         var ok = navigator.sendBeacon(endpoint, blob);
         if (ok) return;
       }
       fetch(endpoint, {
         method: "POST",
         keepalive: true,
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
         body: body,
       }).catch(function () {});
     } catch (e) {}
