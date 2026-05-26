@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +38,14 @@ export function LoginForm() {
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-6">
       <div className="bg-grid bg-glow absolute inset-0" aria-hidden />
       <div className="grain absolute inset-0" aria-hidden />
+
+      <Link
+        href="/"
+        className="group absolute left-6 top-6 z-20 inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-surface/40 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm transition-colors hover:border-foreground/25 hover:bg-surface hover:text-foreground"
+      >
+        <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+        Back to home
+      </Link>
 
       <div className="relative z-10 w-full max-w-md animate-fade-up">
         <Link href="/" className="mb-10 flex justify-center">
